@@ -14,7 +14,7 @@ class Jukebox
   end
 
   def get_user_input
-    gets.strip.downcase
+    gets.strip
   end
 
   def help
@@ -34,15 +34,14 @@ class Jukebox
   def play(input = nil)
     if input.nil?
       puts "\nWhich song would you like to hear?"
+      print PROMPT
       input = get_user_input
-      song = songs.find.with_index(1) do |s, i|
-        input == s.downcase || input == i.to_s
-      end
-    else
-      song = songs.find.with_index(1) do |s, i|
-        input.downcase == s.downcase || input == i.to_s
-      end
     end
+
+    song = songs.find.with_index(1) do |s, i|
+      input.downcase == s.downcase || input == i.to_s
+    end
+
     puts "\nNow Playing: #{song}"
   end
 
@@ -58,20 +57,16 @@ class Jukebox
   def call
     welcome
     help
-    # while true --- commentted out to get tests to pass
-    # the while loop is needed for the program to keep asking for input
-    # program works fine with it but tests would not accept
-      puts "\nPlease enter a command:"
-      print PROMPT
-      input = get_user_input
-      case input
-        when 'help' then help
-        when 'list' then list
-        when 'play' then play
-        when /play\s+/ then play(input.gsub('play ', ''))
-        when 'exit' then goodbye
-        else help
-      end
-    # end
+    puts "\nPlease enter a command:"
+    print PROMPT
+    input = get_user_input
+    case input
+      when 'help' then help
+      when 'list' then list
+      when 'play' then play
+      when /play\s+/ then play(input.gsub('play ', ''))
+      when 'exit' then goodbye
+      else help; list
+    end
   end
 end
