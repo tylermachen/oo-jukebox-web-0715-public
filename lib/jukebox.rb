@@ -4,6 +4,7 @@ class Jukebox
 
   def initialize(songs)
     @songs = songs
+    @continue = true
   end
 
   def welcome
@@ -48,7 +49,7 @@ class Jukebox
 
   def goodbye
     puts "\nGoodbye.\n\n"
-    abort
+    @continue = false
   end
 
   def invalid_command
@@ -58,7 +59,7 @@ class Jukebox
   def call
     welcome
     help
-    while true
+    until @continue == false
       puts "\nPlease enter a command:"
       print PROMPT
       input = get_user_input
