@@ -14,7 +14,7 @@ class Jukebox
   end
 
   def get_user_input
-    gets.strip
+    gets.strip.downcase
   end
 
   def help
@@ -39,7 +39,7 @@ class Jukebox
     end
 
     song = songs.find.with_index(1) do |s, i|
-      input.downcase == s.downcase || input == i.to_s
+      input == s.downcase || input == i.to_s
     end
 
     puts "\nNow Playing: #{song}"
@@ -57,16 +57,18 @@ class Jukebox
   def call
     welcome
     help
-    puts "\nPlease enter a command:"
-    print PROMPT
-    input = get_user_input
-    case input
-      when 'help' then help
-      when 'list' then list
-      when 'play' then play
-      when /play\s+/ then play(input.gsub('play ', ''))
-      when 'exit' then goodbye
-      else help; list
+    while true
+      puts "\nPlease enter a command:"
+      print PROMPT
+      input = get_user_input
+      case input
+        when 'help' then help
+        when 'list' then list
+        when 'play' then play
+        when /play\s+/ then play(input.gsub('play ', ''))
+        when 'exit' then goodbye
+        else help
+      end
     end
   end
 end
