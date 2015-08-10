@@ -6,13 +6,6 @@ class Jukebox
     @songs = songs
   end
 
-  def welcome
-    puts "\nWelcome to your..."
-    puts "*~---------------------~*"
-    puts "│ ♩♩ ♫ ♩ JUKEBOX ♩♩ ♫ ♩ │"
-    puts "*~---------------------~*"
-  end
-
   def get_user_input
     gets.strip.downcase
   end
@@ -34,14 +27,15 @@ class Jukebox
   def play(input = nil)
     if input.nil?
       puts "\nWhich song would you like to hear?"
-      print PROMPT
       input = get_user_input
+      song = songs.find.with_index(1) do |s, i|
+        input == s.downcase || input == i.to_s
+      end
+    else
+      song = songs.find.with_index(1) do |s, i|
+        input.downcase == s.downcase || input == i.to_s
+      end
     end
-
-    song = songs.find.with_index(1) do |s, i|
-      input == s.downcase || input == i.to_s
-    end
-
     puts "\nNow Playing: #{song}"
   end
 
@@ -55,12 +49,11 @@ class Jukebox
   end
 
   def call
-    welcome
     help
-    while true
-      puts "\nPlease enter a command:"
-      print PROMPT
-      input = get_user_input
+    puts "\nPlease enter a command:"
+    print PROMPT
+    input = get_user_input
+    unless input == 'exit'
       case input
         when 'help' then help
         when 'list' then list
